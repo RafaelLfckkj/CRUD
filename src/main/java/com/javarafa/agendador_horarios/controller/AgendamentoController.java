@@ -2,15 +2,10 @@ package com.javarafa.agendador_horarios.controller;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.javarafa.agendador_horarios.infrastructure.entities.Agendamento;
 import com.javarafa.agendador_horarios.service.AgendamentoService;
@@ -18,6 +13,7 @@ import com.javarafa.agendador_horarios.service.AgendamentoService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
+@RequestMapping("/agendamentos")
 @RequiredArgsConstructor
 public class AgendamentoController {
     
@@ -36,7 +32,7 @@ public class AgendamentoController {
     }
 
     @GetMapping
-    public ResponseEntity<Agendamento> buscarAgendamentosDia(@RequestParam LocalDate data){
+    public ResponseEntity<List<Agendamento>> buscarAgendamentosDia(@RequestParam LocalDate data){
         return ResponseEntity.ok().body(agendamentoService.buscarAgendamentosDia(data));
     }
 
