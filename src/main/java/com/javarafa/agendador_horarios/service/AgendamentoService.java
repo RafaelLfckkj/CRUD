@@ -18,37 +18,37 @@ import lombok.RequiredArgsConstructor;
 public class AgendamentoService {
     private final AgendamentoRepository agendamentoRepository;
 
-    public Agendamento salvarAgendamento(Agendamento agendamento){
+    public Agendamento salvarAgendamento(Agendamento agendamento) {
         LocalDateTime horaAgendamento = agendamento.getDataHoraAgendamento();
         LocalDateTime horaFim = agendamento.getDataHoraAgendamento().plusHours(1);
 
-       Agendamento agendados = agendamentoRepository.findByServicoAndDataHoraAgendamentoBetween(agendamento.getServico(), horaAgendamento, horaFim);
+        Agendamento agendados = agendamentoRepository.findByServicoAndDataHoraAgendamentoBetween(agendamento.getServico(), horaAgendamento, horaFim);
 
-        if(Objects.nonNull(agendados)){
+        if (Objects.nonNull(agendados)) {
             throw new RuntimeException("Horário já está preenchido");
         }
-        return agendamentoRepository.save(agendamento); 
+        return agendamentoRepository.save(agendamento);
     }
 
-    public void deletarAgendamento(LocalDateTime dataHoraAgendamento, String cliente){
+    public void deletarAgendamento(LocalDateTime dataHoraAgendamento, String cliente) {
         agendamentoRepository.deleteByDataHoraAgendamentoAndCliente(dataHoraAgendamento, cliente);
     }
 
-    public List<Agendamento> buscarAgendamentosDia(LocalDate data){
+    public List<Agendamento> buscarAgendamentosDia(LocalDate data) {
         LocalDateTime primeiraHoraDia = data.atStartOfDay();
         LocalDateTime horaFinalDia = data.atTime(23, 59, 59);
 
-      return  agendamentoRepository.findByDataHoraAgendamentoBetween(primeiraHoraDia, horaFinalDia);
+        return agendamentoRepository.findByDataHoraAgendamentoBetween(primeiraHoraDia, horaFinalDia);
     }
 
-    public Agendamento alterarAgendamento(Agendamento agendamento, String cliente, LocalDateTime dataHoraAgendamento){
+    public Agendamento alterarAgendamento(Agendamento agendamento, String cliente, LocalDateTime dataHoraAgendamento) {
         Agendamento agenda = agendamentoRepository.findByDataHoraAgendamentoAndCliente(dataHoraAgendamento, cliente);
 
-        if(Objects.isNull(agenda)){
+        if (Objects.isNull(agenda)) {
             throw new RuntimeException("Horário Não Está Preenchido!");
         }
 
         agendamento.setId(agenda.getId());
-        return agendamentoRepository.save(agendamento); 
+        return agendamentoRepository.save(agendamento);
     }
 }
